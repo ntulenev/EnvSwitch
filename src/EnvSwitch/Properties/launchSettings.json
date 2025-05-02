@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EnvSwitch": {
+      "commandName": "Project",
+      "commandLineArgs": "profiles"
+    }
+  }
+}
