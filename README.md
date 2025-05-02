@@ -7,28 +7,29 @@ Utility for quickly switching environment variables between multiple profiles (e
 
 ```yaml
 {
-  "Profiles": [
-    "Dev",
-    "Stage",
-    "Prod"
-  ],
-  "EnvironmentVariables": {
-    "MyDatabaseConnectionString": {
-      "Dev": "DevConnectionString",
-      "Stage": "StageConnectionString",
-      "Prod": "ProdConnectionString"
-    },
-    "MyApiEndpoint": {
-      "Dev": "https://dev.example.com/api",
-      "Stage": "https://stage.example.com/api"
-    },
-    "MyLogLevel": {
-      "Dev": "Debug",
-      "Stage": "Information",
-      "Prod": "Error"
+  "ProfilesConfiguration": {
+    "Profiles": [
+      "Dev",
+      "Stage",
+      "Prod"
+    ],
+    "EnvironmentVariables": {
+      "MyDatabaseConnectionString": {
+        "Dev": "DevConnectionString",
+        "Stage": "StageConnectionString",
+        "Prod": "ProdConnectionString"
+      },
+      "MyApiEndpoint": {
+        "Dev": "https://dev.example.com/api",
+        "Stage": "https://stage.example.com/api"
+      },
+      "MyLogLevel": {
+        "Dev": "Debug",
+        "Stage": "Information",
+        "Prod": "Error"
+      }
     }
-  },
-  "EnvironmentLevel": "User"
+  }
 }
 ```
 
@@ -40,7 +41,7 @@ If a variable is not provided for a specific profile, its value will be deleted 
 ### 1. List available profiles
 Command:
 ```bash
-envswitch profiles list
+envswitch profiles
 ```
 
 Example output:
@@ -54,31 +55,30 @@ Profiles:
 ### 2. Show variable values for a profile
 Command:
 ```bash
-envswitch profile show <profile-name>
+envswitch profile --name <profile-name>
 ```
 
 Example usage:
 ```bash
-envswitch profile show Dev
+envswitch profile --name Dev
 ```
 
 Example output:
 ```bash
-Profile: Dev
-- MyDatabaseConnectionString: DevConnectionString
-- MyApiEndpoint: https://dev.example.com/api
-- MyLogLevel: Debug
+MyApiEndpoint : https://dev.example.com/api
+MyDatabaseConnectionString : DevConnectionString
+MyLogLevel : Debug
 ```
 
 ### 3. Apply a profile
 Command:
 ```bash
-envswitch profile apply <profile-name>
+envswitch apply --name <profile-name>
 ```
 
 Example usage:
 ```bash
-envswitch profile apply Stage
+envswitch apply --name Stage
 ```
 
 Example output:
@@ -86,18 +86,17 @@ Example output:
 Profile 'Stage' applied successfully.
 ```
 
-### 4.  Show real variable values
+### 4.  Show currentreal variable values
 Command:
 ```bash
-envswitch variables show
+envswitch variables
 ```
 
 Example output:
 ```bash
-Real Variables:
-- MyDatabaseConnectionString: StageConnectionString
-- MyApiEndpoint: https://stage.example.com/api
-- MyLogLevel: Information
+MyApiEndpoint : https://stage.example.com/api
+MyDatabaseConnectionString : StageConnectionString
+MyLogLevel : Information
 ```
 
 
