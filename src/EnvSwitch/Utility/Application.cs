@@ -2,7 +2,7 @@ using System.CommandLine.NamingConventionBinder;
 using System.CommandLine;
 using Abstractions;
 
-namespace EnvSwitch.Logic;
+namespace EnvSwitch.Utility;
 
 /// <summary>
 /// Entry point of the app logic

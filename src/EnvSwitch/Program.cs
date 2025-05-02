@@ -1,6 +1,8 @@
 using Abstractions;
 
-using EnvSwitch.Logic;
+using EnvSwitch.Utility;
+
+using Infrastructure;
 
 using Logic;
 
@@ -11,6 +13,8 @@ using var cts = new CancellationTokenSource();
 var sc = new ServiceCollection();
 sc.AddSingleton<IApplication, Application>();
 sc.AddSingleton<IEnvManager, EnvManager>();
+sc.AddSingleton<IOutputProcessor, OutputProcessor>();
+sc.AddSingleton<IProfileManager, ProfileManager>();
 var provider = sc.BuildServiceProvider();
 using var scope = provider.CreateScope();
 var app = scope.ServiceProvider.GetRequiredService<IApplication>();

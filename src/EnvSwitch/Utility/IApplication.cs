@@ -1,5 +1,5 @@
 
-namespace EnvSwitch.Logic;
+namespace EnvSwitch.Utility;
 
 /// <summary>
 /// Application logic entry point
@@ -13,5 +13,5 @@ public interface IApplication
     /// </summary>
     /// <param name="args">application args.</param>
     /// <param name="ct">Cancelation token.</param>
-    public Task RunAsync(string[] args, CancellationToken ct);
+    Task RunAsync(string[] args, CancellationToken ct);
 }
