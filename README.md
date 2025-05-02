@@ -3,11 +3,11 @@
 # EnvSwitch
 Utility for quickly switching environment variables between multiple profiles (e.g. Dev, Stage, Prod)
 
-Config example:
+## Config example:
 
 ```yaml
 {
-  "Environments": [
+  "Profiles": [
     "Dev",
     "Stage",
     "Prod"
@@ -31,5 +31,72 @@ Config example:
 }
 ```
 
-Filling the environment is optional. 
-If a variable is not provided for a specific environment, its value will be deleted
+Filling in the profile for a variable is optional. 
+If a variable is not provided for a specific profile, its value will be deleted when the profile is applied.
+
+## Commands
+
+### 1. List available profiles
+Command:
+```bash
+envswitch profiles list
+```
+
+Example output:
+```bash
+Profiles:
+- Dev
+- Stage
+- Prod
+```
+
+### 2. Show variable values for a profile
+Command:
+```bash
+envswitch profile show <profile-name>
+```
+
+Example usage:
+```bash
+envswitch profile show Dev
+```
+
+Example output:
+```bash
+Profile: Dev
+- MyDatabaseConnectionString: DevConnectionString
+- MyApiEndpoint: https://dev.example.com/api
+- MyLogLevel: Debug
+```
+
+### 3. Apply a profile
+Command:
+```bash
+envswitch profile apply <profile-name>
+```
+
+Example usage:
+```bash
+envswitch profile apply Stage
+```
+
+Example output:
+```bash
+Profile 'Stage' applied successfully.
+```
+
+### 4.  Show real variable values
+Command:
+```bash
+envswitch variables show
+```
+
+Example output:
+```bash
+Real Variables:
+- MyDatabaseConnectionString: StageConnectionString
+- MyApiEndpoint: https://stage.example.com/api
+- MyLogLevel: Information
+```
+
+
