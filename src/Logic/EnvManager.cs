@@ -10,44 +10,38 @@ namespace Logic;
 public sealed class EnvManager : IEnvManager
 {
 
+    /// <summary>
+    /// Creates <see cref="EnvManager"/>.
+    /// </summary>
+    /// <param name="profileManager"></param>
+    /// <param name="outputProcessor"></param>
+    public EnvManager(IProfileManager profileManager, IOutputProcessor outputProcessor)
+    {
+        ArgumentNullException.ThrowIfNull(profileManager);
+        ArgumentNullException.ThrowIfNull(outputProcessor);
+        _profileManager = profileManager;
+        _outputProcessor = outputProcessor;
+    }
+
     /// <inheritdoc/>
     public void ListProfiles()
     {
-
-        Console.WriteLine("Profiles:");
-        Console.WriteLine("- Dev");
-        Console.WriteLine("- Stage");
-        Console.WriteLine("- Prod");
-
+        var names = _profileManager.GetProfileNames();
+        _outputProcessor.DisplayProfileNames(names);
     }
 
     /// <inheritdoc/>
     public void ShowProfileValues(ProfileName name)
     {
         ArgumentNullException.ThrowIfNull(name);
-        var profileName = name.Value;
-        Console.WriteLine($"Profile: {profileName}");
-        if (profileName == "Dev")
+
+        if (_profileManager.TryGetProfile(name, out var profile))
         {
-            Console.WriteLine("MyDatabaseConnectionString: DevConnectionString");
-            Console.WriteLine("MyApiEndpoint: https://dev.example.com/api");
-            Console.WriteLine("MyLogLevel: Debug");
-        }
-        else if (profileName == "Stage")
-        {
-            Console.WriteLine("MyDatabaseConnectionString: StageConnectionString");
-            Console.WriteLine("MyApiEndpoint: https://stage.example.com/api");
-            Console.WriteLine("MyLogLevel: Information");
-        }
-        else if (profileName == "Prod")
-        {
-            Console.WriteLine("MyDatabaseConnectionString: ProdConnectionString");
-            Console.WriteLine("MyApiEndpoint: https://prod.example.com/api");
-            Console.WriteLine("MyLogLevel: Error");
+            _outputProcessor.ShowVariables(profile.Variables);
         }
         else
         {
-            Console.WriteLine("Profile not found.");
+            _outputProcessor.ShowError("Profile not found.");
         }
     }
 
@@ -56,7 +50,7 @@ public sealed class EnvManager : IEnvManager
     {
         ArgumentNullException.ThrowIfNull(name);
         var profileName = name.Value;
-        Console.WriteLine($"Profile '{profileName}' applied successfully.");
+        _outputProcessor.ApplyProfile(name);
     }
 
     /// <inheritdoc/>
@@ -67,6 +61,8 @@ public sealed class EnvManager : IEnvManager
         Console.WriteLine("MyApiEndpoint: https://stage.example.com/api");
         Console.WriteLine("MyLogLevel: Information");
     }
+
+    private readonly IProfileManager _profileManager;
+    private readonly IOutputProcessor _outputProcessor;
 }
 
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
