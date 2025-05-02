@@ -27,7 +27,8 @@ Utility for quickly switching environment variables between multiple profiles (e
       "Stage": "Information",
       "Prod": "Error"
     }
-  }
+  },
+  "EnvironmentLevel": "User"
 }
 ```
 
