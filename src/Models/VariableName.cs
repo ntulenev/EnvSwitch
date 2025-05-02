@@ -2,7 +2,7 @@ namespace Models;
 /// <summary>
 /// Represents the name of an environment variable.
 /// </summary>
-public sealed class VariableName
+public sealed record class VariableName
 {
     /// <summary>
     /// Gets the name of the variable.
