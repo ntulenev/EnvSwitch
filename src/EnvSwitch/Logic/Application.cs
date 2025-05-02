@@ -1,5 +1,6 @@
 using System.CommandLine.NamingConventionBinder;
 using System.CommandLine;
+using Abstractions;
 
 namespace EnvSwitch.Logic;
 
@@ -10,6 +11,17 @@ namespace EnvSwitch.Logic;
 public sealed class Application : IApplication
 #pragma warning restore CA1515 // Consider making public types internal
 {
+
+    /// <summary>
+    /// Creates application
+    /// </summary>
+    /// <param name="manager">Environment manager</param>
+    public Application(IEnvManager manager)
+    {
+        ArgumentNullException.ThrowIfNull(manager);
+        _envManager = manager;
+    }
+
     /// <inheritdoc/>
     /// <exception cref="OperationCanceledException">
     /// Throws on cancelation token is canceled.
@@ -17,14 +29,13 @@ public sealed class Application : IApplication
     public async Task RunAsync(string[] args, CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
-
         var profilesListCommand = new Command("profiles", "List available profiles")
         {
-            Handler = CommandHandler.Create(() => ListProfiles())
+            Handler = CommandHandler.Create(() => _envManager.ListProfiles())
         };
         var profileCommand = new Command("profile", "Show values for a specific profile")
         {
-            Handler = CommandHandler.Create<string>(ShowProfileValues)
+            Handler = CommandHandler.Create<string>(profile => _envManager.ShowProfileValues(new Models.ProfileName(profile)))
         };
         profileCommand.AddOption(new Option<string>("--name", "Name of the profile")
         {
@@ -32,7 +43,7 @@ public sealed class Application : IApplication
         });
         var applyCommand = new Command("apply", "Apply a specific profile")
         {
-            Handler = CommandHandler.Create<string>(ApplyProfile)
+            Handler = CommandHandler.Create<string>(profile => _envManager.ApplyProfile(new Models.ProfileName(profile)))
         };
         applyCommand.AddOption(new Option<string>("--name", "Name of the profile to apply")
         {
@@ -40,9 +51,8 @@ public sealed class Application : IApplication
         });
         var variablesCommand = new Command("variables", "Show real environment variable values")
         {
-            Handler = CommandHandler.Create(() => ShowRealValues())
+            Handler = CommandHandler.Create(() => _envManager.ShowRealValues())
         };
-
         var rootCommand = new RootCommand
         {
             profilesListCommand,
@@ -50,57 +60,8 @@ public sealed class Application : IApplication
             applyCommand,
             variablesCommand,
         };
-
         _ = await rootCommand.InvokeAsync(args);
-
-        //Stub methods
-
-        void ListProfiles()
-        {
-            Console.WriteLine("Profiles:");
-            Console.WriteLine("- Dev");
-            Console.WriteLine("- Stage");
-            Console.WriteLine("- Prod");
-        }
-
-        void ShowProfileValues(string profileName)
-        {
-            Console.WriteLine($"Profile: {profileName}");
-            if (profileName == "Dev")
-            {
-                Console.WriteLine("MyDatabaseConnectionString: DevConnectionString");
-                Console.WriteLine("MyApiEndpoint: https://dev.example.com/api");
-                Console.WriteLine("MyLogLevel: Debug");
-            }
-            else if (profileName == "Stage")
-            {
-                Console.WriteLine("MyDatabaseConnectionString: StageConnectionString");
-                Console.WriteLine("MyApiEndpoint: https://stage.example.com/api");
-                Console.WriteLine("MyLogLevel: Information");
-            }
-            else if (profileName == "Prod")
-            {
-                Console.WriteLine("MyDatabaseConnectionString: ProdConnectionString");
-                Console.WriteLine("MyApiEndpoint: https://prod.example.com/api");
-                Console.WriteLine("MyLogLevel: Error");
-            }
-            else
-            {
-                Console.WriteLine("Profile not found.");
-            }
-        }
-
-        void ApplyProfile(string profileName)
-        {
-            Console.WriteLine($"Profile '{profileName}' applied successfully.");
-        }
-
-        void ShowRealValues()
-        {
-            Console.WriteLine("Real Variables:");
-            Console.WriteLine("MyDatabaseConnectionString: StageConnectionString");
-            Console.WriteLine("MyApiEndpoint: https://stage.example.com/api");
-            Console.WriteLine("MyLogLevel: Information");
-        }
     }
+
+    private readonly IEnvManager _envManager;
 }

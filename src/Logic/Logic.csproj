@@ -15,6 +15,12 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Abstractions\Abstractions.csproj" />
+	  <ProjectReference Include="..\Models\Models.csproj" />
+	</ItemGroup>
 
 </Project>
