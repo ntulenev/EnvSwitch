@@ -40,6 +40,10 @@ public sealed class WorkstationManager : IWorkstationManager
             {
                 Environment.SetEnvironmentVariable(variable.Name.Value, variable.Payload, _target);
             }
+            else
+            {
+                Environment.SetEnvironmentVariable(variable.Name.Value, string.Empty, _target);
+            }
         }
     }
 
