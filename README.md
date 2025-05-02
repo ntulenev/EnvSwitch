@@ -86,7 +86,7 @@ Example output:
 Profile 'Stage' applied successfully.
 ```
 
-### 4.  Show currentreal variable values
+### 4.  Show current system variable values
 Command:
 ```bash
 envswitch variables
