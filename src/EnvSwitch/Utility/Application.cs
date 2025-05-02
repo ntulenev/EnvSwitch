@@ -1,6 +1,7 @@
 using System.CommandLine.NamingConventionBinder;
 using System.CommandLine;
 using Abstractions;
+using Models;
 
 namespace EnvSwitch.Utility;
 
@@ -22,6 +23,61 @@ public sealed class Application : IApplication
         _envManager = manager;
     }
 
+    private Command AddListCommand()
+    {
+        var profilesListCommand = new Command("profiles", "List available profiles")
+        {
+            Handler = CommandHandler.Create(() => _envManager.ListProfiles())
+        };
+        var profileCommand = new Command("profile")
+        {
+            new Option<string>("--name", "Name of the profile to apply")
+            {
+                IsRequired = true
+            }
+        };
+
+        return profilesListCommand;
+    }
+
+    private Command AddProfileCommand()
+    {
+        var profileCommand = new Command("profile")
+        {
+            new Option<string>("--name", "Name of the profile to apply")
+            {
+                IsRequired = true
+            }
+        };
+        profileCommand.Description = "Show values for a specific profile";
+        profileCommand.Handler = CommandHandler.Create<string>(name => _envManager.ShowProfileValues(new ProfileName(name)));
+        return profileCommand;
+
+    }
+
+    private Command AddApplyCommand()
+    {
+        var applyCommand = new Command("apply")
+        {
+            new Option<string>("--name", "Name of the profile to apply")
+            {
+                IsRequired = true
+            }
+        };
+        applyCommand.Description = "Apply a specific profile";
+        applyCommand.Handler = CommandHandler.Create<string>((name) => _envManager.ApplyProfile(new ProfileName(name)));
+        return applyCommand;
+    }
+
+    private Command AddVariablesCommand()
+    {
+        var variablesCommand = new Command("variables", "Show real environment variable values")
+        {
+            Handler = CommandHandler.Create(() => _envManager.ShowRealValues())
+        };
+        return variablesCommand;
+    }
+
     /// <inheritdoc/>
     /// <exception cref="OperationCanceledException">
     /// Throws on cancelation token is canceled.
@@ -29,36 +85,12 @@ public sealed class Application : IApplication
     public async Task RunAsync(string[] args, CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
-        var profilesListCommand = new Command("profiles", "List available profiles")
-        {
-            Handler = CommandHandler.Create(() => _envManager.ListProfiles())
-        };
-        var profileCommand = new Command("profile", "Show values for a specific profile")
-        {
-            Handler = CommandHandler.Create<string>(profile => _envManager.ShowProfileValues(new Models.ProfileName(profile)))
-        };
-        profileCommand.AddOption(new Option<string>("--name", "Name of the profile")
-        {
-            IsRequired = true
-        });
-        var applyCommand = new Command("apply", "Apply a specific profile")
-        {
-            Handler = CommandHandler.Create<string>(profile => _envManager.ApplyProfile(new Models.ProfileName(profile)))
-        };
-        applyCommand.AddOption(new Option<string>("--name", "Name of the profile to apply")
-        {
-            IsRequired = true
-        });
-        var variablesCommand = new Command("variables", "Show real environment variable values")
-        {
-            Handler = CommandHandler.Create(() => _envManager.ShowRealValues())
-        };
         var rootCommand = new RootCommand
         {
-            profilesListCommand,
-            profileCommand,
-            applyCommand,
-            variablesCommand,
+            AddListCommand(),
+            AddProfileCommand(),
+            AddApplyCommand(),
+            AddVariablesCommand(),
         };
         _ = await rootCommand.InvokeAsync(args);
     }

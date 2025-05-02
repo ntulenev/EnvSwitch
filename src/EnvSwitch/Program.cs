@@ -23,6 +23,7 @@ var builder = new HostBuilder()
       _ = services.AddSingleton<IEnvManager, EnvManager>();
       _ = services.AddSingleton<IOutputProcessor, OutputProcessor>();
       _ = services.AddSingleton<IProfileManager, ProfileManager>();
+      _ = services.AddSingleton<IWorkstationManager, WorkstationManager>();
   });
 var host = builder.Build();
 using var scope = host.Services.CreateScope();

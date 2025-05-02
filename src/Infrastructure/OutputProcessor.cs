@@ -37,18 +37,21 @@ public sealed class OutputProcessor : IOutputProcessor
         {
             if (profileVar.IsSet)
             {
-                Console.WriteLine($"{profileVar} : {profileVar.Payload}");
+                Console.WriteLine($"{profileVar.Name.Value} : {profileVar.Payload}");
             }
+            else
             {
-                Console.WriteLine($"{profileVar} is not set");
+                Console.WriteLine($"{profileVar.Name.Value} is not set");
             }
         }
     }
 
     /// <inheritdoc/>
-    public void ShowError(string message)
+    public void ProcessNotification(Notification message)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(message);
-        Console.WriteLine(message);
+        ArgumentNullException.ThrowIfNull(message);
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(message.Text);
+        Console.ResetColor();
     }
 }

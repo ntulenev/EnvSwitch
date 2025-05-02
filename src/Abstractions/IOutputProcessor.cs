@@ -28,6 +28,6 @@ public interface IOutputProcessor
     /// <summary>
     /// Display  error
     /// </summary>
-    /// <param name="message">Error message</param>
-    void ShowError(string message);
+    /// <param name="message">Notification</param>
+    void ProcessNotification(Notification message);
 }

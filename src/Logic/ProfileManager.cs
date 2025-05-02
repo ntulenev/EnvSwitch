@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
 
 using Abstractions;
@@ -24,10 +25,15 @@ public sealed class ProfileManager : IProfileManager
 
         var config = options.Value;
         _profiles = config.CreateProfiles();
+        Variables = _profiles.SelectMany(x => x.Value.Variables).Select(x => x.Name).ToHashSet().ToFrozenSet();
+
     }
 
     /// <inheritdoc/>
     public IEnumerable<ProfileName> GetProfileNames() => _profiles.Keys;
+
+    /// <inheritdoc/>
+    public IReadOnlySet<VariableName> Variables { get; }
 
     /// <inheritdoc/>
     public bool TryGetProfile(ProfileName name, [MaybeNullWhen(false)] out EnvironmentProfile profile) =>

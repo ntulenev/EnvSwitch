@@ -22,4 +22,9 @@ public interface IProfileManager
     /// <param name="profile">When this method returns, contains the profile associated with the provided name if found, otherwise <see langword="null"/>.</param>
     /// <returns><see langword="true"/> if the profile was found; otherwise, <see langword="false"/>.</returns>
     bool TryGetProfile(ProfileName name, [MaybeNullWhen(false)] out EnvironmentProfile profile);
+
+    /// <summary>
+    /// Provide list of Vairable names.
+    /// </summary>
+    IReadOnlySet<VariableName> Variables { get; }
 }

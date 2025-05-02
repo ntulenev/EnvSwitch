@@ -2,7 +2,7 @@
   "profiles": {
     "EnvSwitch": {
       "commandName": "Project",
-      "commandLineArgs": "profiles"
+      "commandLineArgs": "profile --name Dev"
     }
   }
 }

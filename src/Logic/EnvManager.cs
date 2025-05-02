@@ -15,12 +15,15 @@ public sealed class EnvManager : IEnvManager
     /// </summary>
     /// <param name="profileManager"></param>
     /// <param name="outputProcessor"></param>
-    public EnvManager(IProfileManager profileManager, IOutputProcessor outputProcessor)
+    /// <param name="workstationManager"></param>
+    public EnvManager(IProfileManager profileManager, IOutputProcessor outputProcessor, IWorkstationManager workstationManager)
     {
         ArgumentNullException.ThrowIfNull(profileManager);
         ArgumentNullException.ThrowIfNull(outputProcessor);
+        ArgumentNullException.ThrowIfNull(workstationManager);
         _profileManager = profileManager;
         _outputProcessor = outputProcessor;
+        _workstationManager = workstationManager;
     }
 
     /// <inheritdoc/>
@@ -41,7 +44,7 @@ public sealed class EnvManager : IEnvManager
         }
         else
         {
-            _outputProcessor.ShowError("Profile not found.");
+            _outputProcessor.ProcessNotification(new Notification("Profile not found."));
         }
     }
 
@@ -49,20 +52,27 @@ public sealed class EnvManager : IEnvManager
     public void ApplyProfile(ProfileName name)
     {
         ArgumentNullException.ThrowIfNull(name);
-        var profileName = name.Value;
+
+        if (_profileManager.TryGetProfile(name, out var profile))
+        {
+            _workstationManager.ApplyVariables(profile.Variables);
+        }
+        else
+        {
+            _outputProcessor.ProcessNotification(new Notification("Profile not found."));
+        }
         _outputProcessor.ApplyProfile(name);
     }
 
     /// <inheritdoc/>
     public void ShowRealValues()
     {
-        Console.WriteLine("Real Variables:");
-        Console.WriteLine("MyDatabaseConnectionString: StageConnectionString");
-        Console.WriteLine("MyApiEndpoint: https://stage.example.com/api");
-        Console.WriteLine("MyLogLevel: Information");
+        var variables = _workstationManager.GetVariables(_profileManager.Variables);
+        _outputProcessor.ShowVariables(variables);
     }
 
     private readonly IProfileManager _profileManager;
     private readonly IOutputProcessor _outputProcessor;
+    private readonly IWorkstationManager _workstationManager;
 }
 
