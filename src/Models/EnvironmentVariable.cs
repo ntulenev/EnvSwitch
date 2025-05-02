@@ -42,7 +42,7 @@ public sealed class EnvironmentVariable
         ArgumentNullException.ThrowIfNull(name);
         Name = name;
         Payload = null!;
-        IsSet = true;
+        IsSet = false;
     }
 
     /// <summary>
