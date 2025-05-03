@@ -1,5 +1,9 @@
 using Abstractions;
 
+using Infrastructure.Configuration;
+
+using Microsoft.Extensions.Options;
+
 using Models;
 
 namespace Infrastructure;
@@ -12,9 +16,14 @@ public sealed class WorkstationManager : IWorkstationManager
     /// <summary>
     /// Creates <see cref="WorkstationManager"/>.
     /// </summary>
-    public WorkstationManager()
+    /// <param name="config"></param>
+    public WorkstationManager(IOptions<WorkstationConfiguration> config)
     {
-        _target = EnvironmentVariableTarget.User;
+        ArgumentNullException.ThrowIfNull(config);
+
+        _target = config.Value.Scope == EnvironmentScope.User
+                              ? EnvironmentVariableTarget.User
+                              : EnvironmentVariableTarget.Machine;
     }
 
     /// <summary>
