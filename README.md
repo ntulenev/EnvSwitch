@@ -51,8 +51,8 @@ Scope: Defines the target scope for Environment Variables.
 
 | **Scope**      | **Description**                                               |
 |----------------|---------------------------------------------------------------|
-| **User**       | Applies the configuration on a per-user basis.               |
-| **Workstation**| Applies the configuration on a per-workstation (machine) basis. |
+| **User**       | Applies Environment Variables on a per-user basis.               |
+| **Workstation**| Applies Environment Variables on a per-workstation (machine) basis. |
 
 ### ProfilesConfiguration
 Profiles: An array of profile names representing different environments. These profiles can be customized based on your needs and might include environments like Dev, Stage, Prod, or any other environments specific to your setup.
