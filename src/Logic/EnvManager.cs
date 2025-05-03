@@ -44,7 +44,7 @@ public sealed class EnvManager : IEnvManager
         }
         else
         {
-            _outputProcessor.ProcessNotification(new Notification("Profile not found."));
+            _outputProcessor.ProcessNotification(new Notification($"Profile '{name.Value}' not found."));
         }
     }
 
@@ -59,7 +59,7 @@ public sealed class EnvManager : IEnvManager
         }
         else
         {
-            _outputProcessor.ProcessNotification(new Notification("Profile not found."));
+            _outputProcessor.ProcessNotification(new Notification($"Profile '{name.Value}' not found."));
         }
         _outputProcessor.ApplyProfile(name);
     }
