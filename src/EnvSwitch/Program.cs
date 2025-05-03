@@ -3,6 +3,7 @@ using Abstractions;
 using EnvSwitch.Utility;
 
 using Infrastructure;
+using Infrastructure.Configuration;
 
 using Logic;
 using Logic.Configuration;
@@ -19,6 +20,8 @@ var builder = new HostBuilder()
   {
       _ = services.Configure<ProfilesConfiguration>(
           hostContext.Configuration.GetSection(nameof(ProfilesConfiguration)));
+      _ = services.Configure<WorkstationConfiguration>(
+    hostContext.Configuration.GetSection(nameof(WorkstationConfiguration)));
       _ = services.AddSingleton<IApplication, Application>();
       _ = services.AddSingleton<IEnvManager, EnvManager>();
       _ = services.AddSingleton<IOutputProcessor, OutputProcessor>();
