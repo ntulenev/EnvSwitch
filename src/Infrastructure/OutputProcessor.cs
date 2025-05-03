@@ -13,7 +13,11 @@ public sealed class OutputProcessor : IOutputProcessor
     public void ApplyProfile(ProfileName profileName)
     {
         ArgumentNullException.ThrowIfNull(profileName);
-        Console.WriteLine($"Profile '{profileName.Value}' applied successfully.");
+        Console.Write("Profile '");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write(profileName.Value);
+        Console.ResetColor();
+        Console.WriteLine("' applied successfully.");
     }
 
     /// <inheritdoc/>
@@ -22,10 +26,12 @@ public sealed class OutputProcessor : IOutputProcessor
         ArgumentNullException.ThrowIfNull(profiles);
 
         Console.WriteLine("Profiles:");
+        Console.ForegroundColor = ConsoleColor.Green;
         foreach (var profileName in profiles)
         {
             Console.WriteLine($"- {profileName.Value}");
         }
+        Console.ResetColor();
     }
 
     /// <inheritdoc/>
@@ -37,11 +43,17 @@ public sealed class OutputProcessor : IOutputProcessor
         {
             if (profileVar.IsSet)
             {
-                Console.WriteLine($"{profileVar.Name.Value} : {profileVar.Payload}");
+                Console.Write($"{profileVar.Name.Value} : ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(profileVar.Payload);
+                Console.ResetColor();
             }
             else
             {
-                Console.WriteLine($"{profileVar.Name.Value} is not set");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(profileVar.Name.Value);
+                Console.WriteLine(" is not set");
+                Console.ResetColor();
             }
         }
     }
