@@ -5,7 +5,7 @@ using Models;
 namespace Infrastructure;
 
 /// <summary>
-/// Displays output data
+/// Displays output data.
 /// </summary>
 public sealed class OutputProcessor : IOutputProcessor
 {

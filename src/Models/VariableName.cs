@@ -18,6 +18,7 @@ public sealed record class VariableName
     public VariableName(string name)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
+
         Value = name;
     }
 }

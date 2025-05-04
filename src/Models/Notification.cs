@@ -18,6 +18,7 @@ public sealed class Notification
     public Notification(string text)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(text);
+
         Text = text;
     }
 }

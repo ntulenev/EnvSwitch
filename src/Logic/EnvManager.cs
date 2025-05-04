@@ -13,14 +13,15 @@ public sealed class EnvManager : IEnvManager
     /// <summary>
     /// Creates <see cref="EnvManager"/>.
     /// </summary>
-    /// <param name="profileManager"></param>
-    /// <param name="outputProcessor"></param>
-    /// <param name="workstationManager"></param>
+    /// <param name="profileManager">An instance of <see cref="IProfileManager"/> used to manage profiles.</param>
+    /// <param name="outputProcessor">An instance of <see cref="IOutputProcessor"/> responsible for processing output.</param>
+    /// <param name="workstationManager">An instance of <see cref="IWorkstationManager"/> used to manage workstations.</param>
     public EnvManager(IProfileManager profileManager, IOutputProcessor outputProcessor, IWorkstationManager workstationManager)
     {
         ArgumentNullException.ThrowIfNull(profileManager);
         ArgumentNullException.ThrowIfNull(outputProcessor);
         ArgumentNullException.ThrowIfNull(workstationManager);
+
         _profileManager = profileManager;
         _outputProcessor = outputProcessor;
         _workstationManager = workstationManager;

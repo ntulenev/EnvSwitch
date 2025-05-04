@@ -19,6 +19,7 @@ public sealed record class ProfileName
     public ProfileName(string name)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
+
         Value = name;
     }
 }
