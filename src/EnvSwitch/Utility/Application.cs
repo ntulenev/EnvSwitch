@@ -31,7 +31,7 @@ public sealed class Application : IApplication
         };
         var profileCommand = new Command("profile")
         {
-            new Option<string>("--name", "Name of the profile to apply")
+            new Option<string>(["--name", "-n"], "Name of the profile to apply")
             {
                 IsRequired = true
             }
@@ -44,7 +44,7 @@ public sealed class Application : IApplication
     {
         var profileCommand = new Command("profile")
         {
-            new Option<string>("--name", "Name of the profile to apply")
+            new Option<string>(["--name", "-n"], "Name of the profile to apply")
             {
                 IsRequired = true
             }
@@ -59,7 +59,7 @@ public sealed class Application : IApplication
     {
         var applyCommand = new Command("apply")
         {
-            new Option<string>("--name", "Name of the profile to apply")
+            new Option<string>(["--name", "-n"], "Name of the profile to apply")
             {
                 IsRequired = true
             }
