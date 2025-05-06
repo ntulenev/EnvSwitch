@@ -128,4 +128,15 @@ MyDatabaseConnectionString : StageConnectionString
 MyLogLevel : Information
 ```
 
+### 5. Show info about the tool
+Command:
+```bash
+envswitch hello
+```
+
+Example output:
+
+<img src="helloImg.png" />
+
+
 
