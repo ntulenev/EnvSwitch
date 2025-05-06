@@ -8,14 +8,12 @@ using Infrastructure.Configuration;
 using Logic;
 using Logic.Configuration;
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using var cts = new CancellationTokenSource();
 
-var builder = new HostBuilder()
-  .ConfigureAppConfiguration((hostingContext, config) => _ = config.AddJsonFile("appsettings.json", optional: true))
+var builder = Host.CreateDefaultBuilder()
   .ConfigureServices((hostContext, services) =>
   {
       _ = services.Configure<ProfilesConfiguration>(
@@ -32,6 +30,7 @@ var host = builder.Build();
 using var scope = host.Services.CreateScope();
 var app = scope.ServiceProvider.GetRequiredService<IApplication>();
 await app.RunAsync(args, cts.Token);
+
 
 
 
