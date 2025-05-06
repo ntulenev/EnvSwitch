@@ -78,6 +78,15 @@ public sealed class Application : IApplication
         return variablesCommand;
     }
 
+    private Command AddHelloCommand()
+    {
+        var variablesCommand = new Command("hello", "Show info about the env switch cli")
+        {
+            Handler = CommandHandler.Create(() => _envManager.SayHello())
+        };
+        return variablesCommand;
+    }
+
     /// <inheritdoc/>
     /// <exception cref="OperationCanceledException">
     /// Throws on cancelation token is canceled.
@@ -91,6 +100,7 @@ public sealed class Application : IApplication
             AddProfileCommand(),
             AddApplyCommand(),
             AddVariablesCommand(),
+            AddHelloCommand()
         };
         _ = await rootCommand.InvokeAsync(args);
     }

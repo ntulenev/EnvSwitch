@@ -28,6 +28,9 @@ public sealed class EnvManager : IEnvManager
     }
 
     /// <inheritdoc/>
+    public void SayHello() => _outputProcessor.DisplayHello();
+
+    /// <inheritdoc/>
     public void ListProfiles()
     {
         var names = _profileManager.GetProfileNames();

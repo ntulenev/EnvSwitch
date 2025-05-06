@@ -28,4 +28,9 @@ public interface IEnvManager
     /// Displays the current real values of environment variables.
     /// </summary>
     void ShowRealValues();
+
+    /// <summary>
+    /// Display info about application.
+    /// </summary>
+    public void SayHello();
 }

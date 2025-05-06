@@ -2,6 +2,8 @@ using Abstractions;
 
 using Models;
 
+using Spectre.Console;
+
 namespace Infrastructure;
 
 /// <summary>
@@ -65,5 +67,15 @@ public sealed class OutputProcessor : IOutputProcessor
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine(message.Text);
         Console.ResetColor();
+    }
+
+    /// <inheritdoc/>
+    public void DisplayHello()
+    {
+        AnsiConsole.Write(new FigletText("EnvSwitch").Centered().
+        Color(Color.SteelBlue));
+
+        AnsiConsole.MarkupLine("[bold]Utility[/] for quickly switching [underline]environment variables[/] " +
+            "between [italic]multiple profiles.[/]");
     }
 }

@@ -30,4 +30,9 @@ public interface IOutputProcessor
     /// </summary>
     /// <param name="message">Notification</param>
     void ProcessNotification(Notification message);
+
+    /// <summary>
+    /// Display application start info.
+    /// </summary>
+    void DisplayHello();
 }
