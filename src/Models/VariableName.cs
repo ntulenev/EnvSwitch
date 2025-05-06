@@ -1,8 +1,10 @@
+using System.Text.RegularExpressions;
+
 namespace Models;
 /// <summary>
 /// Represents the name of an environment variable.
 /// </summary>
-public sealed record class VariableName
+public sealed partial record class VariableName
 {
     /// <summary>
     /// Gets the name of the variable.
@@ -19,6 +21,20 @@ public sealed record class VariableName
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
+        if (name.Length > 255)
+        {
+            throw new ArgumentException("The environment variable name cannot exceed 255 characters.", nameof(name));
+        }
+
+        if (!EnvNameRegex().IsMatch(name))
+        {
+            throw new ArgumentException("The environment variable name can only contain letters, digits, and " +
+                "underscores, and must start with a letter or an underscore.", nameof(name));
+        }
+
         Value = name;
     }
+
+    [GeneratedRegex(@"^[A-Za-z_][A-Za-z0-9_]*$")]
+    private static partial Regex EnvNameRegex();
 }
