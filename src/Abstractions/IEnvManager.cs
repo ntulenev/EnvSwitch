@@ -32,5 +32,5 @@ public interface IEnvManager
     /// <summary>
     /// Display info about application.
     /// </summary>
-    public void SayHello();
+    void SayHello();
 }

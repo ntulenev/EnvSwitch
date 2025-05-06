@@ -13,7 +13,7 @@ public interface IProfileManager
     /// Gets the collection of profile names.
     /// </summary>
     /// <returns>A read-only collection of <see cref="ProfileName"/> representing the names of all available profiles.</returns>
-    IEnumerable<ProfileName> GetProfileNames();
+    IReadOnlySet<ProfileName> GetProfileNames();
 
     /// <summary>
     /// Attempts to retrieve a profile by its name.

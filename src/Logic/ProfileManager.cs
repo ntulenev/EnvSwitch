@@ -26,11 +26,12 @@ public sealed class ProfileManager : IProfileManager
         var config = options.Value;
         _profiles = config.CreateProfiles();
         Variables = _profiles.SelectMany(x => x.Value.Variables).Select(x => x.Name).ToHashSet().ToFrozenSet();
+        _names = _profiles.Keys.ToHashSet().ToFrozenSet();
 
     }
 
     /// <inheritdoc/>
-    public IEnumerable<ProfileName> GetProfileNames() => _profiles.Keys;
+    public IReadOnlySet<ProfileName> GetProfileNames() => _names;
 
     /// <inheritdoc/>
     public IReadOnlySet<VariableName> Variables { get; }
@@ -40,4 +41,5 @@ public sealed class ProfileManager : IProfileManager
         _profiles.TryGetValue(name, out profile);
 
     private readonly IReadOnlyDictionary<ProfileName, EnvironmentProfile> _profiles;
+    private readonly IReadOnlySet<ProfileName> _names;
 }
