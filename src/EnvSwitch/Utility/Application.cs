@@ -23,6 +23,15 @@ public sealed class Application : IApplication
         _envManager = manager;
     }
 
+    private static Option<string> CreateNameOption()
+    {
+        var option = new Option<string>(["--name", "-n"], "Name of the profile")
+        {
+            IsRequired = true
+        };
+        return option;
+    }
+
     private Command AddListCommand()
     {
         var profilesListCommand = new Command("profiles", "List available profiles")
@@ -31,10 +40,7 @@ public sealed class Application : IApplication
         };
         var profileCommand = new Command("profile")
         {
-            new Option<string>(["--name", "-n"], "Name of the profile to apply")
-            {
-                IsRequired = true
-            }
+            CreateNameOption()
         };
 
         return profilesListCommand;
@@ -44,10 +50,7 @@ public sealed class Application : IApplication
     {
         var profileCommand = new Command("profile")
         {
-            new Option<string>(["--name", "-n"], "Name of the profile to apply")
-            {
-                IsRequired = true
-            }
+            CreateNameOption()
         };
         profileCommand.Description = "Show values for a specific profile";
         profileCommand.Handler = CommandHandler.Create<string>(name => _envManager.ShowProfileValues(new ProfileName(name)));
@@ -59,10 +62,7 @@ public sealed class Application : IApplication
     {
         var applyCommand = new Command("apply")
         {
-            new Option<string>(["--name", "-n"], "Name of the profile to apply")
-            {
-                IsRequired = true
-            }
+            CreateNameOption()
         };
         applyCommand.Description = "Apply a specific profile";
         applyCommand.Handler = CommandHandler.Create<string>((name) => _envManager.ApplyProfile(new ProfileName(name)));
