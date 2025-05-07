@@ -31,7 +31,7 @@ public class EnvironmentProfile
 
         if (variables.Count == 0)
         {
-            throw new ArgumentException("Variables collection has no items");
+            throw new ArgumentException("Variables collection has no items", nameof(variables));
         }
 
         Name = name;
