@@ -25,6 +25,7 @@ var builder = Host.CreateDefaultBuilder()
       _ = services.AddSingleton<IOutputProcessor, OutputProcessor>();
       _ = services.AddSingleton<IProfileManager, ProfileManager>();
       _ = services.AddSingleton<IWorkstationManager, WorkstationManager>();
+      _ = services.AddSingleton<IEnvironmentProvider, SystemEnvironmentProvider>();
   });
 var host = builder.Build();
 using var scope = host.Services.CreateScope();

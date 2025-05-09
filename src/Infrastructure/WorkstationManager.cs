@@ -14,16 +14,27 @@ namespace Infrastructure;
 public sealed class WorkstationManager : IWorkstationManager
 {
     /// <summary>
-    /// Creates <see cref="WorkstationManager"/>.
+    /// Initializes a new instance of the <see cref="WorkstationManager"/> class with the specified configuration and environment provider.
     /// </summary>
-    /// <param name="config"></param>
-    public WorkstationManager(IOptions<WorkstationConfiguration> config)
+    /// <param name="config">
+    /// An <see cref="IOptions{TOptions}"/> containing the <see cref="WorkstationConfiguration"/>
+    /// that determines the environment variable scope (user or machine).
+    /// </param>
+    /// <param name="environment">
+    /// An implementation of <see cref="IEnvironmentProvider"/> used to interact with environment variables in a testable and decoupled way.
+    /// </param>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown if <paramref name="config"/> or <paramref name="environment"/> is <c>null</c>.
+    /// </exception>
+    public WorkstationManager(IOptions<WorkstationConfiguration> config, IEnvironmentProvider environment)
     {
         ArgumentNullException.ThrowIfNull(config);
+        ArgumentNullException.ThrowIfNull(environment);
 
         _target = config.Value.Scope == EnvironmentScope.User
                               ? EnvironmentVariableTarget.User
                               : EnvironmentVariableTarget.Machine;
+        _environment = environment;
     }
 
     /// <summary>
@@ -47,11 +58,11 @@ public sealed class WorkstationManager : IWorkstationManager
         {
             if (variable.IsSet)
             {
-                Environment.SetEnvironmentVariable(variable.Name.Value, variable.Payload, _target);
+                _environment.SetVariable(variable.Name.Value, variable.Payload, _target);
             }
             else
             {
-                Environment.SetEnvironmentVariable(variable.Name.Value, string.Empty, _target);
+                _environment.SetVariable(variable.Name.Value, string.Empty, _target);
             }
         }
     }
@@ -78,7 +89,7 @@ public sealed class WorkstationManager : IWorkstationManager
 
         foreach (var name in names)
         {
-            var value = Environment.GetEnvironmentVariable(name.Value, _target);
+            var value = _environment.GetVariable(name.Value, _target);
 
             if (!string.IsNullOrEmpty(value))
             {
@@ -94,5 +105,6 @@ public sealed class WorkstationManager : IWorkstationManager
     }
 
     private readonly EnvironmentVariableTarget _target;
+    private readonly IEnvironmentProvider _environment;
 }
 
