@@ -86,7 +86,7 @@ public class ApplicationTests
 
         var app = new Application(envMock.Object);
 
-        await app.RunAsync(["variables"], cts.Token );
+        await app.RunAsync(["variables"], cts.Token);
 
         count.Should().Be(1);
     }
