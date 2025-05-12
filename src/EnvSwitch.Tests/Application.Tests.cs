@@ -91,9 +91,11 @@ public class ApplicationTests
         count.Should().Be(1);
     }
 
-    [Fact(DisplayName = "RunAsync invokes ShowProfileValues on 'profile' command")]
+    [Theory(DisplayName = "RunAsync invokes ShowProfileValues on 'profile' command")]
     [Trait("Category", "Unit")]
-    public async Task RunAsync_ProfileCommand_CallsShowProfileValues()
+    [InlineData("--name")]
+    [InlineData("-n")]
+    public async Task RunAsync_ProfileCommand_CallsShowProfileValues(string commangArg)
     {
         var envMock = new Mock<IEnvManager>(MockBehavior.Strict);
         var capturedName = string.Empty;
@@ -103,14 +105,16 @@ public class ApplicationTests
 
         var app = new Application(envMock.Object);
 
-        await app.RunAsync(["profile", "--name", "Dev"], cts.Token);
+        await app.RunAsync(["profile", commangArg, "Dev"], cts.Token);
 
         capturedName.Should().Be("Dev");
     }
 
-    [Fact(DisplayName = "RunAsync invokes ApplyProfile on 'apply' command")]
+    [Theory(DisplayName = "RunAsync invokes ApplyProfile on 'apply' command")]
     [Trait("Category", "Unit")]
-    public async Task RunAsync_ApplyCommand_CallsApplyProfile()
+    [InlineData("--name")]
+    [InlineData("-n")]
+    public async Task RunAsync_ApplyCommand_CallsApplyProfile(string commangArg)
     {
         var envMock = new Mock<IEnvManager>(MockBehavior.Strict);
         var capturedName = string.Empty;
@@ -120,7 +124,7 @@ public class ApplicationTests
 
         var app = new Application(envMock.Object);
 
-        await app.RunAsync(["apply", "--name", "Prod"], cts.Token);
+        await app.RunAsync(["apply", commangArg, "Prod"], cts.Token);
 
         capturedName.Should().Be("Prod");
     }
