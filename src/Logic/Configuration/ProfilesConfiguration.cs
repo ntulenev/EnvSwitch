@@ -1,5 +1,4 @@
 using System.Collections.Frozen;
-using System.Collections.ObjectModel;
 
 using Models;
 
@@ -16,7 +15,7 @@ public class ProfilesConfiguration
     /// <value>
     /// A list of strings representing the profile names.
     /// </value>
-    public required Collection<string> Profiles { get; init; }
+    public required HashSet<string> Profiles { get; init; }
 
     /// <summary>
     /// Gets or sets the environment variables for each profile.

@@ -25,17 +25,11 @@ public sealed class ProfilesConfigurationValidator : IValidateOptions<ProfilesCo
             return ValidateOptionsResult.Fail("ProfilesConfiguration.EnvironmentVariables must contain at least one entry.");
         }
 
-        var profileSet = new HashSet<string>();
         foreach (var profile in options.Profiles)
         {
             if (string.IsNullOrWhiteSpace(profile))
             {
                 return ValidateOptionsResult.Fail("ProfilesConfiguration.Profiles contains an invalid (null/empty/whitespace) profile name.");
-            }
-
-            if (!profileSet.Add(profile))
-            {
-                return ValidateOptionsResult.Fail($"Duplicate profile '{profile}' found in ProfilesConfiguration.Profiles.");
             }
         }
 
@@ -63,7 +57,7 @@ public sealed class ProfilesConfigurationValidator : IValidateOptions<ProfilesCo
                     return ValidateOptionsResult.Fail($"Environment variable '{variableName}' has null value for profile '{profileKey}'.");
                 }
 
-                if (!profileSet.Contains(profileKey))
+                if (!options.Profiles.Contains(profileKey))
                 {
                     return ValidateOptionsResult.Fail($"Environment variable '{variableName}' references unknown profile '{profileKey}'. " +
                         $"All profile keys must match those declared in Profiles.");
