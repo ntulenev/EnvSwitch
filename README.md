@@ -3,14 +3,6 @@
 # EnvSwitch
 Utility for quickly switching environment variables between multiple profiles (e.g. Dev, Stage, Prod)
 
-### 📌 Note
-
-This is still an early version of the application.  
-Validations and tests are currently in progress.  
-
-- **Planned updates**:  
-  More detailed and visually enhanced data visualization.
-
 ## Config example:
 
 ```yaml
