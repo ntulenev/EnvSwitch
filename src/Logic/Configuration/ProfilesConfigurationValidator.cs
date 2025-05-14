@@ -39,7 +39,6 @@ public sealed class ProfilesConfigurationValidator : IValidateOptions<ProfilesCo
             }
         }
 
-        var variableNameSet = new HashSet<string>();
         foreach (var (variableName, valuesByProfile) in options.EnvironmentVariables)
         {
             if (string.IsNullOrWhiteSpace(variableName))
@@ -47,27 +46,16 @@ public sealed class ProfilesConfigurationValidator : IValidateOptions<ProfilesCo
                 return ValidateOptionsResult.Fail("Environment variable name cannot be null or whitespace.");
             }
 
-            if (!variableNameSet.Add(variableName))
-            {
-                return ValidateOptionsResult.Fail($"Duplicate environment variable '{variableName}' found.");
-            }
-
             if (valuesByProfile is null)
             {
                 return ValidateOptionsResult.Fail($"Environment variable '{variableName}' contains null profile map.");
             }
 
-            var seenProfiles = new HashSet<string>();
             foreach (var (profileKey, value) in valuesByProfile)
             {
                 if (string.IsNullOrWhiteSpace(profileKey))
                 {
                     return ValidateOptionsResult.Fail($"Environment variable '{variableName}' contains null or whitespace profile name key.");
-                }
-
-                if (!seenProfiles.Add(profileKey))
-                {
-                    return ValidateOptionsResult.Fail($"Environment variable '{variableName}' has duplicate entry for profile '{profileKey}'.");
                 }
 
                 if (value is null)
