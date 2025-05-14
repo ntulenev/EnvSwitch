@@ -10,6 +10,7 @@ using Logic.Configuration;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 using var cts = new CancellationTokenSource();
 
@@ -18,6 +19,7 @@ var builder = Host.CreateDefaultBuilder()
   {
       _ = services.Configure<ProfilesConfiguration>(
           hostContext.Configuration.GetSection(nameof(ProfilesConfiguration)));
+      _ = services.AddSingleton<IValidateOptions<ProfilesConfiguration>, ProfilesConfigurationValidator>();
       _ = services.Configure<WorkstationConfiguration>(
     hostContext.Configuration.GetSection(nameof(WorkstationConfiguration)));
       _ = services.AddSingleton<IApplication, Application>();
