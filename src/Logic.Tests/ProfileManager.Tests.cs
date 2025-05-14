@@ -21,7 +21,7 @@ public class ProfileManagerTests
     public void Constructor_InitializesProfilesCorrectly()
     {
         // Arrange
-        var profiles = new Collection<string> { "Dev", "Prod" };
+        var profiles = new HashSet<string> { "Dev", "Prod" };
         var envVars = new Dictionary<string, Dictionary<string, string>>
         {
             ["API_KEY"] = new() { ["Dev"] = "dev-key", ["Prod"] = "prod-key" },
@@ -62,7 +62,7 @@ public class ProfileManagerTests
     public void TryGetProfile_ProfileExists_ReturnsTrueAndProfile()
     {
         // Arrange
-        var profiles = new Collection<string> { "Dev" };
+        var profiles = new HashSet<string> { "Dev" };
         var envVars = new Dictionary<string, Dictionary<string, string>>
         {
             ["TOKEN"] = new() { ["Dev"] = "abc123" }
@@ -96,7 +96,7 @@ public class ProfileManagerTests
     public void TryGetProfile_ProfileDoesNotExist_ReturnsFalse()
     {
         // Arrange
-        var profiles = new Collection<string> { "Dev" };
+        var profiles = new HashSet<string> { "Dev" };
         var envVars = new Dictionary<string, Dictionary<string, string>>
         {
             ["TOKEN"] = new() { ["Dev"] = "abc123" }
